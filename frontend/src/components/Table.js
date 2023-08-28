@@ -3,7 +3,9 @@ import React from 'react';
 function Table(
     {
         headings,
-        data
+        data,
+        handleEditClick,
+        handleDeleteClick
     }
 ) {
 
@@ -28,6 +30,12 @@ function Table(
                                         <td>{dataRow[heading.id]}</td> 
                                     )
                                 })}
+                                <td>
+                                    <button onClick={() => handleEditClick(dataRow['id'])}>edit</button>
+                                </td>
+                                <td>
+                                    <button onClick={() => handleDeleteClick(dataRow['id'])}>delete</button>
+                                </td>
                             </tr>
                         )
                     })}
