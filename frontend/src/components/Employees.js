@@ -1,10 +1,12 @@
 import React from 'react';
+import Table from './Table';
+
 
 function Employees() {
 
     return(
         <div>
-            <h1>hello world</h1>
+            <Table/>
         </div>
     );
 }
