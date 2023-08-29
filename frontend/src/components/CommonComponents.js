@@ -29,6 +29,7 @@ export const TableHeaderRow = styled.tr`
     display: table;
     width: 100%;
     table-layout: fixed;
+    padding: 10px;
 `;
 
 export const TableBody = styled.tbody`
@@ -52,6 +53,7 @@ export const HeaderCell = styled.th`
     padding: 5px;
     align-items: center;
     justify-content: center;
+    font-size: 20px;
 `;
 
 export const Card = styled.div`
@@ -99,4 +101,26 @@ export const StyledButton = styled.button`
         color: white;
         cursor: pointer;
     }
+`;
+
+export const StyledInput = styled.input`
+    font-size: 17px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 80%;
+`;
+
+export const DataEntryRow = styled(TableRow)`
+    background-color: #0F4C75;;
+`;
+
+export const AddButton = styled(StyledButton)`
+    width: 150px;
+    height: 40px;
+    font-size: 15px;
+`;
+
+export const ErrorMessage = styled.div`
+    color: red; 
+    font-size: 20px;
 `;

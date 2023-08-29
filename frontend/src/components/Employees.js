@@ -4,7 +4,8 @@ import axios from 'axios';
 import {
     Header,
     Title,
-    Card
+    Card,
+    ErrorMessage
 } from './CommonComponents';
 
 
@@ -20,6 +21,8 @@ function Employees() {
     const [employeeDataState, setEmployeeDataState] = useState([]);
     const [employeeDataEdit, setEmployeeDataEdit] = useState([]);
     const [editStatus, setEditStatus] = useState([]);
+    const [errorStatus, setErrorStatus] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [newEmployee, setNewEmployee] = useState({
         first_name: '',
         last_name: '',
@@ -42,8 +45,10 @@ function Employees() {
                     editStatusIntialize.push({'id': element['id'], 'status': false})
                 });
                 setEditStatus(editStatusIntialize);
+                setErrorStatus(false);
             }).catch(() => {
-                console.log('Error: employees list cannot be obtained');
+                setErrorStatus(true);
+                setErrorMessage('Error: could not obtain list of employees');
             })
     }
 
@@ -53,8 +58,10 @@ function Employees() {
             .put(baseApi + `update-employee/${employeeId}/`, employeeData)
             .then((resp) => {
                 console.log('Update successful for ', resp.data);
+                setErrorStatus(false);
             }).catch(() => {
-                console.log('Error: employee could not be updated');
+                setErrorStatus(true);
+                setErrorMessage('Error: employee could not be updated');
             })
     }
 
@@ -69,9 +76,10 @@ function Employees() {
                 setEditStatus((editStatuses) =>
                     editStatuses.filter((employeeEditStatus) => employeeEditStatus['id'] !== employeeId)
                 );
-                console.log("Successfully delete employee");
+                setErrorStatus(false);
             }).catch(() => {
-                console.log('Error: could not delete employee from table')
+                setErrorStatus(true);
+                setErrorMessage('Error: could not delete employee from table.');
             });
     }
 
@@ -133,9 +141,11 @@ function Employees() {
                     first_name: "",
                     last_name: "",
                     salary: ""
-                })
+                });
+                setErrorStatus(false);
             }).catch((err) => {
-                console.log('Error: could not create new employee', err);
+                setErrorStatus(true);
+                setErrorMessage('Error: could not create a new employee');
             });
     }
 
@@ -161,6 +171,7 @@ function Employees() {
                     editingData={editingData}
                     updateNewEmployee={updateNewEmployee}
                 />
+                {errorStatus ? <ErrorMessage>{errorMessage}</ErrorMessage> : <div></div>}
             </Card>
         </div>
     );

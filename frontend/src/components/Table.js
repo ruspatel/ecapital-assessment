@@ -8,7 +8,10 @@ import {
     HeaderCell,
     TableBody,
     TableRow,
-    StyledButton
+    StyledButton,
+    StyledInput,
+    DataEntryRow,
+    AddButton
 } from './CommonComponents';
 
 function Table(
@@ -62,18 +65,18 @@ function Table(
                         )
                     })}
                 </TableBody>
-                <TableRow>
+                <DataEntryRow>
                     {headings.map((heading) => {
                         return(
                             <DataCell>
-                                <input placeholder={'Enter ' + heading['name']} type='text' value={newEmployee[heading['id']]} onChange={e => updateNewEmployee(heading['id'], e.target.value)}/>
+                                <StyledInput placeholder={'Enter ' + heading['name']} type='text' value={newEmployee[heading['id']]} onChange={e => updateNewEmployee(heading['id'], e.target.value)}/>
                             </DataCell>
                         );
                     })}
                     <DataCell>
-                        <StyledButton buttonType={'Add'}onClick={() => handleAddEmployee()}>Add Employee</StyledButton>
+                        <AddButton buttonType={'Add'}onClick={() => handleAddEmployee()}>Add Employee</AddButton>
                     </DataCell>
-                </TableRow>
+                </DataEntryRow>
             </StyledTable>
         </div>
     )
