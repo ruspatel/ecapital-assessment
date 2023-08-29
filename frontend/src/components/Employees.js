@@ -1,32 +1,40 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Table from './Table';
+import axios from 'axios';
 
 
 function Employees() {
 
+    const baseApi = 'http://127.0.0.1:8000/';
     const headings = [
         { 'name': 'First Name', 'id' : 'first_name' },
         { 'name': 'Last Name', 'id': 'last_name' },
         { 'name': 'Salary', 'id': 'salary'}
     ];
 
-    const employeeData = [
-        {'id': '1', 'first_name': 'Jane', 'last_name': 'Doe', 'salary': '$99,000'},
-        {'id': '2', 'first_name': 'Ian', 'last_name': 'Malcolm', 'salary': '$99,000'},
-        {'id': '3', 'first_name': 'Ellie', 'last_name': 'Sattler', 'salary': '$99,000'},
-        {'id': '4', 'first_name': 'Dennis', 'last_name': 'Nedry', 'salary': '$99,000'},
-    ];
+    const [employeeDataState, setEmployeeDataState] = useState([]);
+    const [employeeDataEdit, setEmployeeDataEdit] = useState([]);
+    const [editStatus, setEditStatus] = useState([]);
 
-    const editStatusTemp = [
-        {'id': '1', 'status': false},
-        {'id': '2', 'status': false},
-        {'id': '3', 'status': false},
-        {'id': '4', 'status': false},
-    ];
+    useEffect(() => {
+        getEmployeesList();
+    }, []);
 
-    const [employeeDataState, setEmployeeDataState] = useState(employeeData);
-    const [employeeDataEdit, setEmployeeDataEdit] = useState(employeeData);
-    const [editStatus, setEditStatus] = useState(editStatusTemp);
+    const getEmployeesList = () => {
+        axios
+            .get(baseApi, {})
+            .then((resp) => {
+                setEmployeeDataState(resp.data);
+                setEmployeeDataEdit(resp.data);
+                let editStatusIntialize = [];
+                resp.data.forEach(element => {
+                    editStatusIntialize.push({'id': element['id'], 'status': false})
+                });
+                setEditStatus(editStatusIntialize);
+            }).catch(() => {
+                console.log('Error: employees list cannot be obtained');
+            })
+    }
 
     const handleEditClick = (employeeId) => {
         console.log('edit clicked on employee', employeeId);
@@ -64,8 +72,9 @@ function Employees() {
 
     const handleDeleteClick = (employeeId) => {
         console.log('delete clicked on employee', employeeId);
-        setEmployeeDataEdit(employeeDataEdit.filter((employee) => employee['id'] !== employeeId));
-
+        setEmployeeDataEdit((employeeList) =>
+            employeeList.filter((employee) => employee['id'] !== employeeId)
+        );
         setEditStatus(
             editStatus.filter((edit) => edit['id'] !== employeeId)
         );

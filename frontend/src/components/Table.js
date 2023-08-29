@@ -1,5 +1,4 @@
 import React from 'react';
-import {DataCell} from './CommonComponents';
 
 function Table(
     {
@@ -30,16 +29,16 @@ function Table(
                             <tr>
                                 {headings.map((heading) => {
                                     return(
-                                        <td>
-                                            <DataCell readOnly={!editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}>{dataRow[heading['id']]}</DataCell> 
+                                        <td contentEditable={editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}>
+                                            {dataRow['id']}
                                         </td>
                                     )
                                 })}
                                 <td>
-                                    <button onClick={() => handleEditClick(dataRow['id'])}>{editStatus[index]['status'] === false ? 'edit' : 'confirm edit'}</button>
+                                    <button onClick={() => handleEditClick(dataRow['id'])}>{editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'}</button>
                                 </td>
                                 <td>
-                                    <button onClick={() => handleDeleteClick(dataRow['id'])}>delete</button>
+                                    <button onClick={() => handleDeleteClick(dataRow['id'])}>Delete</button>
                                 </td>
                             </tr>
                         )
