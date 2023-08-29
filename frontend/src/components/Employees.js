@@ -15,6 +15,11 @@ function Employees() {
     const [employeeDataState, setEmployeeDataState] = useState([]);
     const [employeeDataEdit, setEmployeeDataEdit] = useState([]);
     const [editStatus, setEditStatus] = useState([]);
+    const [newEmployee, setNewEmployee] = useState({
+        first_name: '',
+        last_name: '',
+        salary: ''
+    });
 
     useEffect(() => {
         getEmployeesList();
@@ -112,15 +117,40 @@ function Employees() {
         deleteEmployee(employeeId);
     }
 
+    const handleAddEmployee = () => {
+        axios
+            .post(baseApi + `add-employee/`, newEmployee)
+            .then((resp) => {
+                console.log('Successfully created new employee', resp.data);
+                setEmployeeDataEdit(oldEmployeeList => [...oldEmployeeList, resp.data])
+                setEditStatus(oldEditList => [...oldEditList, {id: resp.data['id'], status: false}])
+                setNewEmployee({
+                    first_name: "",
+                    last_name: "",
+                    salary: ""
+                })
+            }).catch((err) => {
+                console.log('Error: could not create new employee', err);
+            });
+    }
+
+    const updateNewEmployee = (field, newValue) => {
+        console.log('Updating employee', newValue);
+        setNewEmployee({...newEmployee, [field]: newValue});
+    }
+
     return(
         <div>
             <Table
                 headings={headings}
                 data={employeeDataEdit}
                 editStatus={editStatus}
+                newEmployee={newEmployee}
                 handleEditClick={handleEditClick}
                 handleDeleteClick={handleDeleteClick}
+                handleAddEmployee={handleAddEmployee}
                 editingData={editingData}
+                updateNewEmployee={updateNewEmployee}
             />
         </div>
     );

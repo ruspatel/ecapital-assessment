@@ -6,9 +6,12 @@ function Table(
         headings,
         data,
         editStatus,
+        newEmployee,
         handleEditClick,
         handleDeleteClick,
-        editingData
+        handleAddEmployee,
+        editingData,
+        updateNewEmployee,
     }
 ) {
 
@@ -44,6 +47,16 @@ function Table(
                             </tr>
                         )
                     })}
+                    <tr>
+                        {headings.map((heading) => {
+                            return(
+                                <td>
+                                    <input placeholder={'Enter ' + heading['name']} type='text' value={newEmployee[heading['id']]} onChange={e => updateNewEmployee(heading['id'], e.target.value)}/>
+                                </td>
+                            );
+                        })}
+                        <td><button onClick={() => handleAddEmployee()}>Add Employee</button></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
