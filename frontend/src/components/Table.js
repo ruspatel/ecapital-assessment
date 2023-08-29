@@ -1,5 +1,14 @@
 import React from 'react';
-import ContentEditable from 'react-contenteditable'
+import ContentEditable from 'react-contenteditable';
+import {
+    StyledTable,
+    DataCell,
+    TableHeader,
+    TableHeaderRow,
+    HeaderCell,
+    TableBody,
+    TableRow
+} from './CommonComponents';
 
 function Table(
     {
@@ -17,48 +26,50 @@ function Table(
 
     return(
         <div>
-            <table>
-                <thead>
-                    <tr>
+            <StyledTable>
+                <TableHeader>
+                    <TableHeaderRow>
                         {headings.map((heading) => {
                             return(
-                                <th>{heading['name']}</th>
+                                <HeaderCell>{heading['name']}</HeaderCell>
                             )
                         })}
-                    </tr>
-                </thead>
-                <tbody>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
+                    </TableHeaderRow>
+                </TableHeader>
+                <TableBody>
                     {data.map((dataRow, index) => {
                         return(
-                            <tr>
+                            <TableRow>
                                 {headings.map((heading) => {
                                     return(
-                                        <td>
+                                        <DataCell>
                                             <ContentEditable html={String(dataRow[heading['id']])} disabled={!editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}/>  
-                                        </td>
+                                        </DataCell>
                                     )
                                 })}
-                                <td>
+                                <DataCell>
                                     <button onClick={() => handleEditClick(dataRow['id'])}>{editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'}</button>
-                                </td>
-                                <td>
+                                </DataCell>
+                                <DataCell>
                                     <button onClick={() => handleDeleteClick(dataRow['id'])}>Delete</button>
-                                </td>
-                            </tr>
+                                </DataCell>
+                            </TableRow>
                         )
                     })}
-                    <tr>
-                        {headings.map((heading) => {
-                            return(
-                                <td>
-                                    <input placeholder={'Enter ' + heading['name']} type='text' value={newEmployee[heading['id']]} onChange={e => updateNewEmployee(heading['id'], e.target.value)}/>
-                                </td>
-                            );
-                        })}
-                        <td><button onClick={() => handleAddEmployee()}>Add Employee</button></td>
-                    </tr>
-                </tbody>
-            </table>
+                </TableBody>
+                <TableRow>
+                    {headings.map((heading) => {
+                        return(
+                            <DataCell>
+                                <input placeholder={'Enter ' + heading['name']} type='text' value={newEmployee[heading['id']]} onChange={e => updateNewEmployee(heading['id'], e.target.value)}/>
+                            </DataCell>
+                        );
+                    })}
+                    <DataCell><button onClick={() => handleAddEmployee()}>Add Employee</button></DataCell>
+                </TableRow>
+            </StyledTable>
         </div>
     )
 }

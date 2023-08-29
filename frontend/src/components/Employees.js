@@ -1,6 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import Table from './Table';
 import axios from 'axios';
+import {
+    Header,
+    Title,
+    Card
+} from './CommonComponents';
 
 
 function Employees() {
@@ -9,7 +14,7 @@ function Employees() {
     const headings = [
         { 'name': 'First Name', 'id' : 'first_name' },
         { 'name': 'Last Name', 'id': 'last_name' },
-        { 'name': 'Salary', 'id': 'salary'}
+        { 'name': 'Salary', 'id': 'salary'},
     ];
 
     const [employeeDataState, setEmployeeDataState] = useState([]);
@@ -141,17 +146,22 @@ function Employees() {
 
     return(
         <div>
-            <Table
-                headings={headings}
-                data={employeeDataEdit}
-                editStatus={editStatus}
-                newEmployee={newEmployee}
-                handleEditClick={handleEditClick}
-                handleDeleteClick={handleDeleteClick}
-                handleAddEmployee={handleAddEmployee}
-                editingData={editingData}
-                updateNewEmployee={updateNewEmployee}
-            />
+            <Header>
+                <Title>Employees</Title>
+            </Header>
+            <Card>
+                <Table
+                    headings={headings}
+                    data={employeeDataEdit}
+                    editStatus={editStatus}
+                    newEmployee={newEmployee}
+                    handleEditClick={handleEditClick}
+                    handleDeleteClick={handleDeleteClick}
+                    handleAddEmployee={handleAddEmployee}
+                    editingData={editingData}
+                    updateNewEmployee={updateNewEmployee}
+                />
+            </Card>
         </div>
     );
 }
