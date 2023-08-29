@@ -21,3 +21,13 @@ def add_employee(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
         return Response("Error: could not serialize data", status=status.HTTP_400_BAD_REQUEST)
+    
+# DELETE endpoint for deleting an employee
+@api_view(['DELETE'])
+def delete_employee(_, pk):
+    employee = Employee.objects.get(pk=pk)
+    if employee is not None:
+        employee.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+       return Response('Error: Employee does not exist in the list', status=status.HTTP_400_BAD_REQUEST)
