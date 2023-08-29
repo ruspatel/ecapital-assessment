@@ -1,11 +1,14 @@
 import React from 'react';
+import {DataCell} from './CommonComponents';
 
 function Table(
     {
         headings,
         data,
+        editStatus,
         handleEditClick,
-        handleDeleteClick
+        handleDeleteClick,
+        editingData
     }
 ) {
 
@@ -22,16 +25,18 @@ function Table(
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((dataRow) => {
+                    {data.map((dataRow, index) => {
                         return(
                             <tr>
                                 {headings.map((heading) => {
                                     return(
-                                        <td>{dataRow[heading.id]}</td> 
+                                        <td>
+                                            <DataCell readOnly={!editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}>{dataRow[heading.id]}</DataCell> 
+                                        </td>
                                     )
                                 })}
                                 <td>
-                                    <button onClick={() => handleEditClick(dataRow['id'])}>edit</button>
+                                    <button onClick={() => handleEditClick(dataRow['id'])}>{editStatus[index]['status'] === false ? 'edit' : 'confirm edit'}</button>
                                 </td>
                                 <td>
                                     <button onClick={() => handleDeleteClick(dataRow['id'])}>delete</button>
