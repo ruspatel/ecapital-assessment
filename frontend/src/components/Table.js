@@ -1,4 +1,5 @@
 import React from 'react';
+import ContentEditable from 'react-contenteditable'
 
 function Table(
     {
@@ -29,8 +30,8 @@ function Table(
                             <tr>
                                 {headings.map((heading) => {
                                     return(
-                                        <td contentEditable={editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}>
-                                            {dataRow['id']}
+                                        <td>
+                                            <ContentEditable html={String(dataRow[heading['id']])} disabled={!editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}/>  
                                         </td>
                                     )
                                 })}

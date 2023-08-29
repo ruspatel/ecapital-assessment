@@ -20,6 +20,7 @@ function Employees() {
         getEmployeesList();
     }, []);
 
+    // Populating table with result from GET employees endpoint
     const getEmployeesList = () => {
         axios
             .get(baseApi, {})
@@ -33,6 +34,17 @@ function Employees() {
                 setEditStatus(editStatusIntialize);
             }).catch(() => {
                 console.log('Error: employees list cannot be obtained');
+            })
+    }
+
+    // PUT request to update employee data
+    const updateEmployeeData = (employeeId, employeeData) => {
+        axios
+            .put(baseApi + `update-employee/${employeeId}/`, employeeData)
+            .then((resp) => {
+                console.log('Update successful for ', resp.data);
+            }).catch(() => {
+                console.log('Error: employee could not be updated');
             })
     }
 
@@ -54,6 +66,13 @@ function Employees() {
         if(currEditStatus === true){
             console.log("call update api");
             setEmployeeDataState(employeeDataEdit);
+            const employeeData = employeeDataEdit.filter(employee => employee['id'] === employeeId);
+            let employeeRequestBody = {
+                first_name: employeeData[0]['first_name'],
+                last_name: employeeData[0]['last_name'],
+                salary: employeeData[0]['salary']
+            }
+            updateEmployeeData(employeeId, employeeRequestBody);
         }
     }
 

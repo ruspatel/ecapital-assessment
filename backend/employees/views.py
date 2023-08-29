@@ -40,7 +40,7 @@ def update_employee(request, pk):
         serializer = EmployeeSerializer(employee, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response('Error: could not serialize data', status=status.HTTP_400_BAD_REQUEST)
     else:
