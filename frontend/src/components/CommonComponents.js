@@ -76,7 +76,9 @@ export const Header = styled.div`
 
 export const Title = styled.div`
     font-size: 50px;
-    color: black;
+    color: grey;
+    font-weight: 600;
+    
 `;
 
 export const StyledButton = styled.button`
