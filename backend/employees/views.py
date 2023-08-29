@@ -31,3 +31,17 @@ def delete_employee(_, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     else:
        return Response('Error: Employee does not exist in the list', status=status.HTTP_400_BAD_REQUEST)
+    
+# PUT endpoint for updating fields of an existing employee
+@api_view(['PUT'])
+def update_employee(request, pk):
+    employee = Employee.objects.get(pk=pk)
+    if employee is not None:
+        serializer = EmployeeSerializer(employee, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response('Error: could not serialize data', status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response('Error: Employee does not exist in the list', status=status.HTTP_400_BAD_REQUEST)
