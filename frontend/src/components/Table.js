@@ -19,7 +19,7 @@ function Table(
                     <tr>
                         {headings.map((heading) => {
                             return(
-                                <th>{heading.name}</th>
+                                <th>{heading['name']}</th>
                             )
                         })}
                     </tr>
@@ -31,7 +31,7 @@ function Table(
                                 {headings.map((heading) => {
                                     return(
                                         <td>
-                                            <DataCell readOnly={!editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}>{dataRow[heading.id]}</DataCell> 
+                                            <DataCell readOnly={!editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}>{dataRow[heading['id']]}</DataCell> 
                                         </td>
                                     )
                                 })}

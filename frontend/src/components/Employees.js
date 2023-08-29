@@ -5,9 +5,9 @@ import Table from './Table';
 function Employees() {
 
     const headings = [
-        { name: 'First Name', id : 'first_name' },
-        { name: 'Last Name', id: 'last_name' },
-        { name: 'Salary', id: 'salary'}
+        { 'name': 'First Name', 'id' : 'first_name' },
+        { 'name': 'Last Name', 'id': 'last_name' },
+        { 'name': 'Salary', 'id': 'salary'}
     ];
 
     const employeeData = [
@@ -64,6 +64,11 @@ function Employees() {
 
     const handleDeleteClick = (employeeId) => {
         console.log('delete clicked on employee', employeeId);
+        setEmployeeDataEdit(employeeDataEdit.filter((employee) => employee['id'] !== employeeId));
+
+        setEditStatus(
+            editStatus.filter((edit) => edit['id'] !== employeeId)
+        );
     }
 
     return(
