@@ -38,8 +38,12 @@ function Employees() {
         axios
             .get(baseApi, {})
             .then((resp) => {
-                setEmployeeDataState(resp.data);
-                setEmployeeDataEdit(resp.data);
+                let formattedResp = resp.data.map((employee) => {
+                    let salary = '$' + employee['salary'].toLocaleString('en-US');
+                    return {...employee, 'salary': salary};
+                });
+                setEmployeeDataState(formattedResp);
+                setEmployeeDataEdit(formattedResp);
                 let editStatusIntialize = [];
                 resp.data.forEach(element => {
                     editStatusIntialize.push({'id': element['id'], 'status': false})
@@ -57,7 +61,14 @@ function Employees() {
         axios
             .put(baseApi + `update-employee/${employeeId}/`, employeeData)
             .then((resp) => {
-                console.log('Update successful for ', resp.data);
+                let formattedResp = {...resp.data, 'salary': '$' + resp.data['salary'].toLocaleString('en-US')};
+                setEmployeeDataEdit(employeeDataEdit.map(employee => {
+                    if (employee['id'] == employeeId){
+                        return formattedResp;
+                    } else {
+                        return employee;
+                    }
+                }));
                 setErrorStatus(false);
             }).catch(() => {
                 setErrorStatus(true);
@@ -102,10 +113,11 @@ function Employees() {
             console.log("call update api");
             setEmployeeDataState(employeeDataEdit);
             const employeeData = employeeDataEdit.filter(employee => employee['id'] === employeeId);
+            let formattedSalary = employeeData[0]['salary'].replaceAll('$', '').replaceAll(',', '');
             let employeeRequestBody = {
                 first_name: employeeData[0]['first_name'],
                 last_name: employeeData[0]['last_name'],
-                salary: employeeData[0]['salary']
+                salary: formattedSalary
             }
             updateEmployeeData(employeeId, employeeRequestBody);
         }
@@ -134,9 +146,9 @@ function Employees() {
         axios
             .post(baseApi + `add-employee/`, newEmployee)
             .then((resp) => {
-                console.log('Successfully created new employee', resp.data);
-                setEmployeeDataEdit(oldEmployeeList => [...oldEmployeeList, resp.data])
-                setEditStatus(oldEditList => [...oldEditList, {id: resp.data['id'], status: false}])
+                let formattedResp = {...resp.data, 'salary': '$' + resp.data['salary'].toLocaleString('en-US')};
+                setEmployeeDataEdit(oldEmployeeList => [...oldEmployeeList, formattedResp])
+                setEditStatus(oldEditList => [...oldEditList, {id: formattedResp['id'], status: false}])
                 setNewEmployee({
                     first_name: "",
                     last_name: "",
