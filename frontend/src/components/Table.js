@@ -66,16 +66,18 @@ function Table(
                     })}
                 </TableBody>
                 <DataEntryRow>
-                    {headings.map((heading) => {
-                        return(
-                            <DataCell>
-                                <StyledInput placeholder={'Enter ' + heading['name']} type='text' value={newEmployee[heading['id']]} onChange={e => updateNewEmployee(heading['id'], e.target.value)}/>
-                            </DataCell>
-                        );
-                    })}
-                    <DataCell>
-                        <AddButton buttonType={'Add'}onClick={() => handleAddEmployee()}>Add Employee</AddButton>
-                    </DataCell>
+                    <form onSubmit={(e) => handleAddEmployee(e)}>
+                        {headings.map((heading) => {
+                            return(
+                                <DataCell>
+                                    <StyledInput placeholder={'Enter ' + heading['name']} type='text' value={newEmployee[heading['id']]} onChange={e => updateNewEmployee(heading['id'], e.target.value)}/>
+                                </DataCell>
+                            );
+                        })}
+                        <DataCell>
+                            <AddButton type='submit' buttonType={'Add'}>Add Employee</AddButton>
+                        </DataCell>
+                    </form>
                 </DataEntryRow>
             </StyledTable>
         </div>

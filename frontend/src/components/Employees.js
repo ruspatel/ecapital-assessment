@@ -130,7 +130,7 @@ function Employees() {
         deleteEmployee(employeeId);
     }
 
-    const handleAddEmployee = () => {
+    const handleAddEmployee = (e) => {
         axios
             .post(baseApi + `add-employee/`, newEmployee)
             .then((resp) => {
@@ -147,6 +147,7 @@ function Employees() {
                 setErrorStatus(true);
                 setErrorMessage('Error: could not create a new employee');
             });
+        e.preventDefault();
     }
 
     const updateNewEmployee = (field, newValue) => {
