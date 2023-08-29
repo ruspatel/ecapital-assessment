@@ -48,6 +48,23 @@ function Employees() {
             })
     }
 
+    // Delete request to delete employee from table
+    const deleteEmployee = (employeeId) => {
+        axios
+            .delete(baseApi + `delete-employee/${employeeId}/`)
+            .then(() => {
+                setEmployeeDataEdit((employeeList) =>
+                    employeeList.filter((employee) => employee['id'] !== employeeId)
+                );
+                setEditStatus((editStatuses) =>
+                    editStatuses.filter((employeeEditStatus) => employeeEditStatus['id'] !== employeeId)
+                );
+                console.log("Successfully delete employee");
+            }).catch(() => {
+                console.log('Error: could not delete employee from table')
+            });
+    }
+
     const handleEditClick = (employeeId) => {
         console.log('edit clicked on employee', employeeId);
         let currEditStatus = false;
@@ -89,14 +106,10 @@ function Employees() {
 
     }
 
+    // Handler to respond to delete click on rows
     const handleDeleteClick = (employeeId) => {
         console.log('delete clicked on employee', employeeId);
-        setEmployeeDataEdit((employeeList) =>
-            employeeList.filter((employee) => employee['id'] !== employeeId)
-        );
-        setEditStatus(
-            editStatus.filter((edit) => edit['id'] !== employeeId)
-        );
+        deleteEmployee(employeeId);
     }
 
     return(
