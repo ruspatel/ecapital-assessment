@@ -22,7 +22,6 @@ export const TableHeader = styled.thead`
     background-color: #0F4C75;
     color: white;
     padding: 10px;
-
 `;
 
 export const TableHeaderRow = styled.tr`
@@ -78,7 +77,6 @@ export const Title = styled.div`
     font-size: 50px;
     color: grey;
     font-weight: 600;
-    
 `;
 
 export const StyledButton = styled.button`

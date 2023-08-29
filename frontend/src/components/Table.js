@@ -14,6 +14,7 @@ import {
     AddButton
 } from './CommonComponents';
 
+// Table component is responsible for generating the table with data and callback functions passed from Employee.
 function Table(
     {
         headings,
@@ -45,18 +46,24 @@ function Table(
                 <TableBody>
                     {data.map((dataRow, index) => {
                         return(
-                            <TableRow backgroundColor={index%2 == 0 ? "white" : "#EEEEEE"}>
+                            <TableRow backgroundColor={index%2 === 0 ? "white" : "#EEEEEE"}>
                                 {headings.map((heading) => {
                                     return(
                                         <DataCell>
-                                            <ContentEditable html={String(dataRow[heading['id']])} disabled={!editStatus[index]['status']} onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)}/>  
+                                            <ContentEditable 
+                                                html={String(dataRow[heading['id']])}
+                                                disabled={!editStatus[index]['status']}
+                                                onChange={(e) => editingData(dataRow['id'], heading['id'], e.target.value)
+                                            }/>  
                                         </DataCell>
                                     )
                                 })}
                                 <DataCell>
-                                    <StyledButton buttonType={editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'}onClick={() => handleEditClick(dataRow['id'])}>
-                                        {editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'
-                                    }</StyledButton>
+                                    <StyledButton
+                                        buttonType={editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'}
+                                        onClick={() => handleEditClick(dataRow['id'])}>
+                                            {editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'}
+                                    </StyledButton>
                                 </DataCell>
                                 <DataCell>
                                     <StyledButton buttonType={'Delete'} onClick={() => handleDeleteClick(dataRow['id'])}>Delete</StyledButton>
@@ -70,7 +77,12 @@ function Table(
                         {headings.map((heading) => {
                             return(
                                 <DataCell>
-                                    <StyledInput placeholder={'Enter ' + heading['name']} type='text' value={newEmployee[heading['id']]} onChange={e => updateNewEmployee(heading['id'], e.target.value)}/>
+                                    <StyledInput
+                                        placeholder={'Enter ' + heading['name']}
+                                        type='text'
+                                        value={newEmployee[heading['id']]}
+                                        onChange={e => updateNewEmployee(heading['id'], e.target.value)}
+                                    />
                                 </DataCell>
                             );
                         })}

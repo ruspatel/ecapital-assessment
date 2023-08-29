@@ -18,7 +18,6 @@ function Employees() {
         { 'name': 'Salary', 'id': 'salary'},
     ];
 
-    const [employeeDataState, setEmployeeDataState] = useState([]);
     const [employeeDataEdit, setEmployeeDataEdit] = useState([]);
     const [editStatus, setEditStatus] = useState([]);
     const [errorStatus, setErrorStatus] = useState(false);
@@ -38,12 +37,14 @@ function Employees() {
         axios
             .get(baseApi, {})
             .then((resp) => {
+                // Formatting salary data to include dollar sign and commas
                 let formattedResp = resp.data.map((employee) => {
                     let salary = '$' + employee['salary'].toLocaleString('en-US');
                     return {...employee, 'salary': salary};
                 });
-                setEmployeeDataState(formattedResp);
                 setEmployeeDataEdit(formattedResp);
+                
+                // Intialize the edit status of all rows to be initially false
                 let editStatusIntialize = [];
                 resp.data.forEach(element => {
                     editStatusIntialize.push({'id': element['id'], 'status': false})
@@ -51,6 +52,7 @@ function Employees() {
                 setEditStatus(editStatusIntialize);
                 setErrorStatus(false);
             }).catch(() => {
+                // Set error message status and error message. Currently using generic eror message rather error messge from the backend.
                 setErrorStatus(true);
                 setErrorMessage('Error: could not obtain list of employees');
             })
@@ -61,9 +63,10 @@ function Employees() {
         axios
             .put(baseApi + `update-employee/${employeeId}/`, employeeData)
             .then((resp) => {
+                // Formatting salary data to include dollar sign and commas
                 let formattedResp = {...resp.data, 'salary': '$' + resp.data['salary'].toLocaleString('en-US')};
                 setEmployeeDataEdit(employeeDataEdit.map(employee => {
-                    if (employee['id'] == employeeId){
+                    if (employee['id'] === employeeId){
                         return formattedResp;
                     } else {
                         return employee;
@@ -71,6 +74,7 @@ function Employees() {
                 }));
                 setErrorStatus(false);
             }).catch(() => {
+                // Set error message status and error message. Currently using generic eror message rather error messge from the backend.
                 setErrorStatus(true);
                 setErrorMessage('Error: employee could not be updated');
             })
@@ -81,6 +85,7 @@ function Employees() {
         axios
             .delete(baseApi + `delete-employee/${employeeId}/`)
             .then(() => {
+                // Remove employee from employee data and edit status lists
                 setEmployeeDataEdit((employeeList) =>
                     employeeList.filter((employee) => employee['id'] !== employeeId)
                 );
@@ -89,13 +94,14 @@ function Employees() {
                 );
                 setErrorStatus(false);
             }).catch(() => {
+                // Set error message status and error message. Currently using generic eror message rather error messge from the backend.
                 setErrorStatus(true);
                 setErrorMessage('Error: could not delete employee from table.');
             });
     }
 
+    // Toggle between 'Edit' and 'Confirm Edit' button and call PUT request to make changes
     const handleEditClick = (employeeId) => {
-        console.log('edit clicked on employee', employeeId);
         let currEditStatus = false;
 
         // Toggle edit status
@@ -110,9 +116,9 @@ function Employees() {
 
         // Edit was confirmed, save changes
         if(currEditStatus === true){
-            console.log("call update api");
-            setEmployeeDataState(employeeDataEdit);
             const employeeData = employeeDataEdit.filter(employee => employee['id'] === employeeId);
+            
+            // Reformat salary data so it can be sent in API request
             let formattedSalary = employeeData[0]['salary'].replaceAll('$', '').replaceAll(',', '');
             let employeeRequestBody = {
                 first_name: employeeData[0]['first_name'],
@@ -123,9 +129,8 @@ function Employees() {
         }
     }
 
-    // Update data as it is being edited
+    // Update table data as it is being edited
     const editingData = (employeeId, headerId, newValue) => {
-        console.log("new value", newValue);
         setEmployeeDataEdit(employeeDataEdit.map(employeeData => {
             if (employeeData['id'] === employeeId){
                 return {...employeeData, [headerId]: newValue};
@@ -138,17 +143,20 @@ function Employees() {
 
     // Handler to respond to delete click on rows
     const handleDeleteClick = (employeeId) => {
-        console.log('delete clicked on employee', employeeId);
         deleteEmployee(employeeId);
     }
 
+    // Post request to add new employee to the table
     const handleAddEmployee = (e) => {
         axios
             .post(baseApi + `add-employee/`, newEmployee)
             .then((resp) => {
+                // Format salary data to include dollar sign and commas
                 let formattedResp = {...resp.data, 'salary': '$' + resp.data['salary'].toLocaleString('en-US')};
-                setEmployeeDataEdit(oldEmployeeList => [...oldEmployeeList, formattedResp])
-                setEditStatus(oldEditList => [...oldEditList, {id: formattedResp['id'], status: false}])
+                setEmployeeDataEdit(oldEmployeeList => [...oldEmployeeList, formattedResp]);
+                setEditStatus(oldEditList => [...oldEditList, {id: formattedResp['id'], status: false}]);
+
+                // Reset text values in input boxes
                 setNewEmployee({
                     first_name: "",
                     last_name: "",
@@ -156,14 +164,15 @@ function Employees() {
                 });
                 setErrorStatus(false);
             }).catch((err) => {
+                // Set error message status and error message. Currently using generic eror message rather error messge from the backend.
                 setErrorStatus(true);
                 setErrorMessage('Error: could not create a new employee');
             });
         e.preventDefault();
     }
 
+    // Record new employee data as it is being entered
     const updateNewEmployee = (field, newValue) => {
-        console.log('Updating employee', newValue);
         setNewEmployee({...newEmployee, [field]: newValue});
     }
 
