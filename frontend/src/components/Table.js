@@ -7,7 +7,8 @@ import {
     TableHeaderRow,
     HeaderCell,
     TableBody,
-    TableRow
+    TableRow,
+    StyledButton
 } from './CommonComponents';
 
 function Table(
@@ -41,7 +42,7 @@ function Table(
                 <TableBody>
                     {data.map((dataRow, index) => {
                         return(
-                            <TableRow>
+                            <TableRow backgroundColor={index%2 == 0 ? "white" : "#EEEEEE"}>
                                 {headings.map((heading) => {
                                     return(
                                         <DataCell>
@@ -50,10 +51,12 @@ function Table(
                                     )
                                 })}
                                 <DataCell>
-                                    <button onClick={() => handleEditClick(dataRow['id'])}>{editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'}</button>
+                                    <StyledButton buttonType={editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'}onClick={() => handleEditClick(dataRow['id'])}>
+                                        {editStatus[index]['status'] === false ? 'Edit' : 'Confirm Edit'
+                                    }</StyledButton>
                                 </DataCell>
                                 <DataCell>
-                                    <button onClick={() => handleDeleteClick(dataRow['id'])}>Delete</button>
+                                    <StyledButton buttonType={'Delete'} onClick={() => handleDeleteClick(dataRow['id'])}>Delete</StyledButton>
                                 </DataCell>
                             </TableRow>
                         )
@@ -67,7 +70,9 @@ function Table(
                             </DataCell>
                         );
                     })}
-                    <DataCell><button onClick={() => handleAddEmployee()}>Add Employee</button></DataCell>
+                    <DataCell>
+                        <StyledButton buttonType={'Add'}onClick={() => handleAddEmployee()}>Add Employee</StyledButton>
+                    </DataCell>
                 </TableRow>
             </StyledTable>
         </div>
